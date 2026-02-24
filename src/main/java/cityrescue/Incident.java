@@ -5,7 +5,9 @@ public class Incident {
     // time of report
     // time of resolution
     // status
+    // incident ID
 
     // Methods...
     // set status
+    // choose unit
 }
