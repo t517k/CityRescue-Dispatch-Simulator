@@ -12,9 +12,11 @@ import cityrescue.exceptions.*;
 public class CityRescueImpl implements CityRescue {
 
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
+    int tick;
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
+        tick = 0;
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
