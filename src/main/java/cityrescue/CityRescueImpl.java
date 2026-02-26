@@ -16,6 +16,10 @@ public class CityRescueImpl implements CityRescue {
     // unit object array
     // incident object array
 
+
+    final int MAX_STATIONS = 20;
+    final int MAX_UNITS = 50;
+    final int MAX_INCIDENTS = 200;
     CityMap map;
     int tick;
     int[][] obstacleGrid;
@@ -37,10 +41,10 @@ public class CityRescueImpl implements CityRescue {
     public void addObstacle(int x, int y) throws InvalidLocationException {
         int xWidth = getGridSize()[0];
         int yHeight = getGridSize()[1];
-        if (x<0 || x>=xWidth ||y<0 || y>=yHeight) {
+        if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
             throw new InvalidLocationException("Obstacle cannot be added as location is out of bounds");
         } else {
-
+            obstacleGrid[x][y] =
         }
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
