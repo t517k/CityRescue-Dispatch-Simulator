@@ -1,27 +1,33 @@
 package cityrescue;
-
 import cityrescue.exceptions.InvalidGridException;
 
 public class CityMap {
+    int width;
+    int height;
     int[][] grid;
-    int[][] blockedCells;
-    boolean legalMove;
 
-    public CityMap(int[][] grid, int[][] blockedCells, boolean legalMove) {
-        this.grid = grid;
-        this.blockedCells = blockedCells;
-        this.legalMove = legalMove;
+
+    public CityMap(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
-    // Methods...
-    public int[][] initialiseGrid(int width, int height) throws InvalidGridException {
-        if (width<=0 || height<=0) {
+
+    public void initialiseGrid() throws InvalidGridException {
+        if (this.width<=0 || this.height<=0) {
             throw new InvalidGridException("Invalid width/height for map grid");
         } else {
-
-            return new int[width][height];
+            this.grid = new int[this.width][this.height];
         }
     }
+
+    public int[] getSize() {
+        int y = this.grid.length;
+        int x = this.grid[0].length;
+        return new int[]{x,y};
+    }
+
+
     // update map
     // check if move is legal
     // add blocked cell

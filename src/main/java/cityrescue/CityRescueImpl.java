@@ -12,23 +12,36 @@ import cityrescue.exceptions.*;
 public class CityRescueImpl implements CityRescue {
 
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
+    // station object array
+    // unit object array
+    // incident object array
+
+    CityMap map;
     int tick;
+    int[][] obstacleGrid;
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
         tick = 0;
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        map = new CityMap(width, height);
+        map.initialiseGrid();
+        obstacleGrid = map.grid;
     }
 
     @Override
     public int[] getGridSize() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return map.getSize();
     }
 
     @Override
     public void addObstacle(int x, int y) throws InvalidLocationException {
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (x<0 || x>=xWidth ||y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Obstacle cannot be added as location is out of bounds");
+        } else {
+
+        }
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }

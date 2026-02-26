@@ -1,13 +1,12 @@
 package cityrescue;
 
 public class Station {
-    // Attributes...
-    final int stationCapacity;
     int[] stationGridRef = new int[2];
+    int[][] stationedUnits;
 
-    public Station(int stationCapacity, int[] stationGridRef) {
-        this.stationCapacity = stationCapacity;
+    public Station(int[][] stationedUnits, int[] stationGridRef) {
         this.stationGridRef = stationGridRef;
+        this.stationedUnits = stationedUnits;
     }
 
     // currently based units
