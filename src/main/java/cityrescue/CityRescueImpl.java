@@ -72,7 +72,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getStationIds() {
-        // TODO: implement
+
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

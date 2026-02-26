@@ -1,6 +1,10 @@
 package cityrescue;
+import  cityrescue.enums.*;
 
 public abstract class Unit {
+    int UnitId;
+
+    ;
     // Attributes...
     // status
     // ID
