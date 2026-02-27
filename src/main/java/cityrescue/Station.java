@@ -1,10 +1,12 @@
 package cityrescue;
 
+import java.util.ArrayList;
+
 public class Station {
     String stationName;
     int xCoord;
     int yCoord;
-    int[] stationedUnits;
+    ArrayList<Unit> stationedUnits = new ArrayList<>();
     int stationID;
     static int numOfStations = 0;
 
