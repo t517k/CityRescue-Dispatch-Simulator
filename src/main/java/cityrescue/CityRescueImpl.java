@@ -83,17 +83,26 @@ public class CityRescueImpl implements CityRescue {
                     throw new IllegalStateException("Station cannot be removed as it still contains units");
                 } else {
                     stationObjArray.remove(currentStation);
+                    return;
                 }
-            } else {
-                throw new IDNotRecognisedException("Station cannot be removed as ID has not been found");
             }
         }
+        throw new IDNotRecognisedException("Station capacity cannot be set as ID has not been found");
     }
 
     @Override
     public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(Station currentStation : stationObjArray) {
+            if (currentStation.stationID == stationId) {
+                if (maxUnits<=0 || maxUnits<=currentStation.stationedUnits.size()) {
+                    throw new InvalidCapacityException("Station capacity cannot be set as input is not valid");
+                } else {
+                    currentStation.maxUnits = maxUnits;
+                    return;
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Station capacity cannot be set as ID has not been found");
     }
 
     @Override

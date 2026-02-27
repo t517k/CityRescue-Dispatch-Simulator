@@ -9,6 +9,7 @@ public class Station {
     ArrayList<Unit> stationedUnits = new ArrayList<>();
     int stationID;
     static int numOfStations = 0;
+    int maxUnits;
 
     public Station(int xCoord, int yCoord, String stationName) {
         this.stationID = ++numOfStations;
