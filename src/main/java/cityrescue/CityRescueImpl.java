@@ -107,8 +107,15 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getStationIds() {
-
-        throw new UnsupportedOperationException("Not implemented yet");
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        for(Station currentStation : stationObjArray) {
+            idArrayList.add(currentStation.stationID);
+        }
+        int[] arr = new int[idArrayList.size()];
+        for (int i = 0; i < idArrayList.size(); i++) {
+            arr[i] = idArrayList.get(i);
+        }
+        return arr;
     }
 
     @Override

@@ -1,4 +1,5 @@
 package cityrescue;
+
 import cityrescue.exceptions.InvalidGridException;
 
 public class CityMap {
@@ -35,9 +36,6 @@ public class CityMap {
         this.grid[y][x] = null;
     }
 
-    public boolean isBlocked() {
-
-    }
 
 
 

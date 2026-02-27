@@ -4,8 +4,8 @@ addObstacle - DONE
 removeObstacle - DONE
 addStation - DONE
 removeStation - DONE
-setStationCapacity - TODO
-getStationIds - TODO
+setStationCapacity - DONE
+getStationIds - DONE
 addUnit - TODO
 decommissionUnit - TODO
 transferUnit - TODO
