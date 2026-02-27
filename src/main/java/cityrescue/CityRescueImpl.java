@@ -1,7 +1,9 @@
 package cityrescue;
 
+import java.util.ArrayList;
 import cityrescue.enums.*;
 import cityrescue.exceptions.*;
+import com.sun.jdi.ObjectCollectedException;
 
 /**
  * CityRescueImpl (Starter)
@@ -12,24 +14,22 @@ import cityrescue.exceptions.*;
 public class CityRescueImpl implements CityRescue {
 
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
-    // station object array
-    // unit object array
-    // incident object array
-
 
     final int MAX_STATIONS = 20;
     final int MAX_UNITS = 50;
     final int MAX_INCIDENTS = 200;
+    ArrayList<Unit> unitObjArray = new ArrayList<>();
+    ArrayList<Station> stationObjArray = new ArrayList<>();
+    ArrayList<Incident> incidentObjArray = new ArrayList<>();
     CityMap map;
     int tick;
-    int[][] obstacleGrid;
+
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
         tick = 0;
         map = new CityMap(width, height);
         map.initialiseGrid();
-        obstacleGrid = map.grid;
     }
 
     @Override
@@ -44,26 +44,45 @@ public class CityRescueImpl implements CityRescue {
         if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
             throw new InvalidLocationException("Obstacle cannot be added as location is out of bounds");
         } else {
-            obstacleGrid[x][y] =
+            Obstacle newObstacle = new Obstacle(x, y);
+            map.addObstacle(x, y, newObstacle);
         }
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Obstacle cannot be removed as location is out of bounds");
+        } else {
+            map.removeObstacle(x, y);
+        }
     }
 
     @Override
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (name.isEmpty()) {
+            throw new InvalidNameException("Station name is blank");
+        } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Station cannot be added as location is out of bounds");
+        } else {
+            Station newstation = new Station(x, y, name);
+            stationObjArray.add(newstation);
+            return newstation.stationID;
+        }
     }
 
     @Override
     public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
+        boolean check;
+        for(Station currentStation : stationObjArray) {
+            if (currentStation.stationID == stationId) {
+                check =
+            }
+        }
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -160,6 +179,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String getStatus() {
+        System.out.println("TICK="+tick);
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }

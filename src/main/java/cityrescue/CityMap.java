@@ -4,7 +4,7 @@ import cityrescue.exceptions.InvalidGridException;
 public class CityMap {
     int width;
     int height;
-    int[][] grid;
+    Object[][] grid;
 
 
     public CityMap(int width, int height) {
@@ -17,7 +17,7 @@ public class CityMap {
         if (this.width<=0 || this.height<=0) {
             throw new InvalidGridException("Invalid width/height for map grid");
         } else {
-            this.grid = new int[this.width][this.height];
+            this.grid = new Object[this.width][this.height];
         }
     }
 
@@ -26,6 +26,22 @@ public class CityMap {
         int x = this.grid[0].length;
         return new int[]{x,y};
     }
+
+    public void addObstacle(int x, int y, Object object) {
+        this.grid[y][x] = object;
+    }
+
+    public void removeObstacle(int x, int y) {
+        this.grid[y][x] = null;
+    }
+
+    public boolean isBlocked() {
+
+    }
+
+
+
+
 
 
     // update map

@@ -1,6 +1,11 @@
 package cityrescue;
 
 public class Obstacle {
-    int[] location = new int[2];
+    int xCoord;
+    int yCoord;
 
+    public Obstacle(int xCoord, int yCoord) {
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
+    }
 }

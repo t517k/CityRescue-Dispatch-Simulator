@@ -2,20 +2,19 @@ package cityrescue;
 
 public class Station {
     String stationName;
-    int[] stationGridRef = new int[2];
+    int xCoord;
+    int yCoord;
     int[] stationedUnits;
     int stationID;
-    int maxUnits;
+    static int numOfStations = 0;
 
-    public Station(int[] stationedUnits, int[] stationGridRef, int stationID, String stationName) {
-        this.stationGridRef = stationGridRef;
-        this.stationedUnits = stationedUnits;
-        this.stationID = stationID;
+    public Station(int xCoord, int yCoord, String stationName) {
+        this.stationID = ++numOfStations;
         this.stationName = stationName;
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
     }
 
-
-    // currently based units
 
 
     // Methods...
