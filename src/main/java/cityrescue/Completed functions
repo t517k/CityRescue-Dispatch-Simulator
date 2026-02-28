@@ -12,10 +12,10 @@ transferUnit - TODO
 setUnitOutOfService - TODO
 getUnitIds - TODO
 viewUnit - TODO
-reportIncident - TODO
-cancelIncident - TODO
-escalateIncident - TODO
-getIncidentIds - TODO
+reportIncident - DONE
+cancelIncident - DONE
+escalateIncident - DONE
+getIncidentIds - DONE
 viewIncident - TODO
 dispatch - TODO
 tick - TODO

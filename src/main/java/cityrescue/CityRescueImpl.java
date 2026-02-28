@@ -68,6 +68,8 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidNameException("Station name is blank");
         } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
             throw new InvalidLocationException("Station cannot be added as location is out of bounds");
+        } else if (map.isBlocked(x, y)) {
+            throw new InvalidLocationException("Station cannot be added as location is blocked");
         } else {
             Station newstation = new Station(x, y, name);
             stationObjArray.add(newstation);
@@ -156,26 +158,70 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (type == null) {
+            throw
+        } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Incident cannot be reported as location is out of bounds");
+        } else if (severity<1 || severity>5){
+            throw new InvalidSeverityException("Incident cannot be added as severity is invalid");
+        } else if (map.isBlocked(x, y)){
+            throw new InvalidLocationException("Incident cannot be reported as location is blocked");
+        } else {
+            Incident newIncident = new Incident(IncidentStatus.REPORTED, type, severity, x, y);
+            incidentObjArray.add(newIncident);
+            return newIncident.incidentID;
+        }
     }
 
     @Override
     public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(Incident currentIncident : incidentObjArray) {
+            if (currentIncident.incidentID == incidentId) {
+                if (currentIncident.status == IncidentStatus.REPORTED) {
+                    currentIncident.status = IncidentStatus.CANCELLED;
+                    return;
+                } else if (currentIncident.status == IncidentStatus.DISPATCHED){
+                    currentIncident.status = IncidentStatus.CANCELLED;
+                    // TODO add code to release units when more unit code has been created
+                    return;
+                } else {
+                    throw new IllegalStateException("Incident cannot be cancelled as at current state it cannot be cancelled");
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
     }
 
     @Override
     public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(Incident currentIncident : incidentObjArray) {
+            if (currentIncident.incidentID == incidentId) {
+                if (newSeverity<1 || newSeverity>5) {
+                    throw new InvalidSeverityException("Incident cannot be escalated as severity is invalid");
+                } else if (currentIncident.status == IncidentStatus.CANCELLED || currentIncident.status == IncidentStatus.RESOLVED) {
+                    throw new IllegalStateException("Incident cannot be escalated as at current state it cannot be escalated");
+                } else {
+                    currentIncident.severity = newSeverity;
+                    return;
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
     }
 
     @Override
     public int[] getIncidentIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        for(Incident currentIncident : incidentObjArray) {
+            idArrayList.add(currentIncident.incidentID);
+        }
+        int[] arr = new int[idArrayList.size()];
+        for (int i = 0; i < idArrayList.size(); i++) {
+            arr[i] = idArrayList.get(i);
+        }
+        return arr;
     }
 
     @Override
