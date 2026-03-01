@@ -1,4 +1,5 @@
 package cityrescue;
 
-public class Ambulance {
+public class Ambulance extends Unit{
+
 }

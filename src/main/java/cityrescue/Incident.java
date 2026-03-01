@@ -14,7 +14,7 @@ public class Incident {
     int xCoord;
     int yCoord;
     int incidentID;
-    ArrayList<Unit> dispatchedUnits = new ArrayList<>();
+    Unit dispatchedUnit;
 
     public Incident(IncidentStatus status, IncidentType type, int severity, int xCoord, int yCoord) {
         this.status = status;

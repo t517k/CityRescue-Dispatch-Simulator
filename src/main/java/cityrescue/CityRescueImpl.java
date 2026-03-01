@@ -161,7 +161,7 @@ public class CityRescueImpl implements CityRescue {
         int xWidth = getGridSize()[0];
         int yHeight = getGridSize()[1];
         if (type == null) {
-            throw
+            throw new IllegalAccessError("Incident cannot be reported as type is null");
         } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
             throw new InvalidLocationException("Incident cannot be reported as location is out of bounds");
         } else if (severity<1 || severity>5){
@@ -226,8 +226,15 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(Incident currentIncident : incidentObjArray) {
+            if (currentIncident.incidentID == incidentId) {
+                String incidentOutput = "I#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
+                return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
+                        currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
+                        currentIncident.dispatchedUnit.UnitId);
+            }
+        }
+        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
     }
 
     @Override
