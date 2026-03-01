@@ -10,7 +10,7 @@ addUnit - TODO
 decommissionUnit - TODO
 transferUnit - TODO
 setUnitOutOfService - TODO
-getUnitIds - TODO
+getUnitIds - DONE
 viewUnit - TODO
 reportIncident - DONE
 cancelIncident - DONE
@@ -20,3 +20,163 @@ viewIncident - DONE
 dispatch - TODO
 tick - TODO
 getStatus - TODO
+/**
+ * CityRescueImpl (Starter)
+ *
+ * Your task is to implement the full specification.
+ * You may add additional classes in any package(s) you like.
+ */
+public class CityRescueImpl implements cityrescue.CityRescue {
+
+    // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
+
+    final int MAX_STATIONS = 20;
+    final int MAX_UNITS = 50;
+    final int MAX_INCIDENTS = 200;
+    ArrayList<Unit> unitObjArray = new ArrayList<>();
+    ArrayList<Station> stationObjArray = new ArrayList<>();
+    ArrayList<Incident> incidentObjArray = new ArrayList<>();
+    CityMap map;
+    int tick;
+
+
+    @Override
+    public void initialise(int width, int height) throws InvalidGridException {
+        tick = 0;
+        map = new CityMap(width, height);
+        map.initialiseGrid();
+    }
+
+    @Override
+    public int[] getGridSize() {
+        return map.getSize();
+    }
+
+    @Override
+    public void addObstacle(int x, int y) throws InvalidLocationException {
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Obstacle cannot be added as location is out of bounds");
+        } else {
+            Obstacle newObstacle = new Obstacle(x, y);
+            map.addObstacle(x, y, newObstacle);
+        }
+    }
+
+    @Override
+    public void removeObstacle(int x, int y) throws InvalidLocationException {
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Obstacle cannot be removed as location is out of bounds");
+        } else {
+            map.removeObstacle(x, y);
+        }
+    }
+
+    @Override
+    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
+        int xWidth = getGridSize()[0];
+        int yHeight = getGridSize()[1];
+        if (name.isEmpty()) {
+            throw new InvalidNameException("Station name is blank");
+        } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
+            throw new InvalidLocationException("Station cannot be added as location is out of bounds");
+        } else if (map.isBlocked(x, y)) {
+            throw new InvalidLocationException("Station cannot be added as location is blocked");
+        } else {
+            Station newstation = new Station(x, y, name);
+            stationObjArray.add(newstation);
+            return newstation.stationID;
+        }
+    }
+
+    @Override
+    public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
+        for(Station currentStation : stationObjArray) {
+            if (currentStation.stationID == stationId) {
+                if (!currentStation.stationedUnits.isEmpty()) {
+                    throw new IllegalStateException("Station cannot be removed as it still contains units");
+                } else {
+                    stationObjArray.remove(currentStation);
+                    return;
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Station capacity cannot be set as ID has not been found");
+    }
+
+    @Override
+    public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
+        for(Station currentStation : stationObjArray) {
+            if (currentStation.stationID == stationId) {
+                if (maxUnits<=0 || maxUnits<=currentStation.stationedUnits.size()) {
+                    throw new InvalidCapacityException("Station capacity cannot be set as input is not valid");
+                } else {
+                    currentStation.maxUnits = maxUnits;
+                    return;
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Station capacity cannot be set as ID has not been found");
+    }
+
+    @Override
+    public int[] getStationIds() {
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        for(Station currentStation : stationObjArray) {
+            idArrayList.add(currentStation.stationID);
+        }
+        int[] arr = new int[idArrayList.size()];
+        for (int i = 0; i < idArrayList.size(); i++) {
+            arr[i] = idArrayList.get(i);
+        }
+        return arr;
+    }
+
+    @Override
+    public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
+
+
+    }
+
+    @Override
+    public void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException {
+        // TODO: implement
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
+        // TODO: implement
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
+        for (Unit currentUnit : unitObjArray) {
+            if (currentUnit.unitID == unitId) {
+                if (currentUnit.status == UnitStatus.IDLE) {
+
+                } else {
+                    throw new IllegalStateException()
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit could not be set to out_of_service as ID has not been found");
+    }
+
+    @Override
+    public int[] getUnitIds() {
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        for(Unit currentUnit : unitObjArray) {
+            idArrayList.add(currentUnit.unitID);
+            }
+        int[] arr = new int[idArrayList.size()];
+        for (int i = 0; i < idArrayList.size(); i++) {
+            arr[i] = idArrayList.get(i);
+            }
+        return arr;
+        }
+    }

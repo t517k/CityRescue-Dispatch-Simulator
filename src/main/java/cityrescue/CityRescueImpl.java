@@ -122,7 +122,8 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
-        ArrayList<Integer> unitObjArray = new ArrayList<>();
+
+
     }
 
     @Override
@@ -153,8 +154,16 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getUnitIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        ArrayList<Integer> idArrayList = new ArrayList<>();
+        for(Unit currentUnit : unitObjArray) {
+            idArrayList.add(currentUnit.unitID);
+            }
+        int[] arr = new int[idArrayList.size()];
+        for (int i = 0; i < idArrayList.size(); i++) {
+            arr[i] = idArrayList.get(i);
+            }
+        return arr;
+        }
     }
 
     @Override
