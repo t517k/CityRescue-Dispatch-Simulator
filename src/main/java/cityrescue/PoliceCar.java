@@ -5,7 +5,7 @@ import cityrescue.enums.UnitType;
 
 public class PoliceCar extends Unit {
     public PoliceCar(UnitType type, UnitStatus status){
-        this.unitID = ++numberofUnits;
+        this.unitID = ++numberOfUnits;
         this.type = UnitType.POLICE_CAR;
         this.status = UnitStatus.IDLE;
     }

@@ -5,7 +5,7 @@ import cityrescue.enums.UnitType;
 
 public class FireEngine extends Unit {
     public FireEngine(UnitType type, UnitStatus status){
-        this.unitID = ++numberofUnits;
+        this.unitID = ++numberOfUnits;
         this.type = UnitType.FIRE_ENGINE;
         this.status = UnitStatus.IDLE;
     }
