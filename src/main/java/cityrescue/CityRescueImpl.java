@@ -139,8 +139,16 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Unit currentUnit : unitObjArray) {
+            if (currentUnit.unitID == unitId) {
+                if (currentUnit.status == UnitStatus.IDLE) {
+
+                } else {
+                    throw new IllegalStateException()
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit could not be set to out_of_service as ID has not been found");
     }
 
     @Override
@@ -151,8 +159,15 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String viewUnit(int unitId) throws IDNotRecognisedException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(Unit currentUnit : unitObjArray) {
+            if (currentUnit.unitID == unitId) {
+                String unitOutput = "U#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
+                return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation,
+                        currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
+                        currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve); // TODO find out what WORK means
+            }
+        }
+        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
     }
 
     @Override
@@ -230,7 +245,7 @@ public class CityRescueImpl implements CityRescue {
                 String incidentOutput = "I#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
                 return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
                         currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
-                        currentIncident.dispatchedUnit.UnitId);
+                        currentIncident.dispatchedUnit.unitID);
             }
         }
         throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
@@ -250,7 +265,6 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String getStatus() {
-        System.out.println("TICK="+tick);
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }

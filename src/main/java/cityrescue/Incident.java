@@ -15,6 +15,7 @@ public class Incident {
     int yCoord;
     int incidentID;
     Unit dispatchedUnit;
+    int ticksLeftToResolve;
 
     public Incident(IncidentStatus status, IncidentType type, int severity, int xCoord, int yCoord) {
         this.status = status;
