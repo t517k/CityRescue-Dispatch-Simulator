@@ -122,8 +122,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        ArrayList<Integer> unitObjArray = new ArrayList<>();
     }
 
     @Override
