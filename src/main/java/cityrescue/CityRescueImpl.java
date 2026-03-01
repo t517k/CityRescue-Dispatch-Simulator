@@ -122,6 +122,44 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
+        if (type == null){
+            throw new InvalidUnitException("Unit type can't be null");
+        }
+        Station targetStation = null;
+        for (Station s: stationObjArray){
+            if (s.stationID == stationId){
+                targetStation = s;
+                break;
+            }
+        }
+        if (targetStation == null){
+            throw new IDNotRecognisedException("Station ID doesn't exist");
+        }
+        if (targetStation.stationedUnits.size() >= targetStation.maxUnits){
+            throw new IllegalStateException("Station is at maximum capacity");
+        }
+        Unit newUnit;
+        switch (type){
+            case FIRE_ENGINE:
+                newUnit = new FireEngine(UnitType.FIRE_ENGINE, UnitStatus.IDLE);
+                break;
+            case AMBULANCE:
+                newUnit = new Ambulance(UnitType.AMBULANCE, UnitStatus.IDLE);
+                break;
+            case POLICE_CAR:
+                newUnit = new Ambulance(UnitType.POLICE_CAR, UnitStatus.IDLE);
+                break;
+            default:
+                throw new InvalidUnitException("Invalid Unit Type");
+        }
+        newUnit.unitID = ++Unit.numberOfUnits;
+        newUnit.homeStation = stationId;
+        newUnit.xCoord = targetStation.xCoord;
+        newUnit.yCoord = targetStation.yCoord;
+
+        targetStation.stationedUnits.add(newUnit);
+
+        return newUnit.unitID;
     }
 
     @Override
@@ -143,7 +181,7 @@ public class CityRescueImpl implements CityRescue {
                 if (currentUnit.status == UnitStatus.IDLE) {
 
                 } else {
-                    throw new IllegalStateException("Unit could not be set to out_of_service as current state does not allow it")
+                    throw new IllegalStateException("Unit could not be set to out_of_service as current state does not allow it");
                 }
             }
         }
