@@ -144,7 +144,7 @@ public class CityRescueImpl implements CityRescue {
                 if (currentUnit.status == UnitStatus.IDLE) {
 
                 } else {
-                    throw new IllegalStateException()
+                    throw new IllegalStateException("Unit could not be set to out_of_service as current state does not allow it")
                 }
             }
         }
