@@ -8,7 +8,7 @@ public abstract class Unit {
     UnitType type;
     UnitStatus status;
     int unitID;
-    int homeStation;
+    Station homeStation;
     int xCoord;
     int yCoord;
     Incident currentIncident;

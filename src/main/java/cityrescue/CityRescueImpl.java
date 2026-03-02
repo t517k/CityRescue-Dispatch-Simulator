@@ -147,13 +147,12 @@ public class CityRescueImpl implements CityRescue {
                 newUnit = new Ambulance(UnitType.AMBULANCE, UnitStatus.IDLE);
                 break;
             case POLICE_CAR:
-                newUnit = new Ambulance(UnitType.POLICE_CAR, UnitStatus.IDLE);
+                newUnit = new PoliceCar(UnitType.POLICE_CAR, UnitStatus.IDLE);
                 break;
             default:
                 throw new InvalidUnitException("Invalid Unit Type");
         }
-        newUnit.unitID = ++Unit.numberOfUnits;
-        newUnit.homeStation = stationId;
+        newUnit.homeStation = targetStation;
         newUnit.xCoord = targetStation.xCoord;
         newUnit.yCoord = targetStation.yCoord;
 
@@ -178,10 +177,20 @@ public class CityRescueImpl implements CityRescue {
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
         for (Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
-                if (currentUnit.status == UnitStatus.IDLE) {
-
+                if (outOfService) {
+                    if (currentUnit.status == UnitStatus.IDLE) {
+                        currentUnit.status = UnitStatus.OUT_OF_SERVICE;
+                        return;
+                    } else {
+                        throw new IllegalStateException("Cannot set out_of_service as current state is illegal");
+                    }
                 } else {
-                    throw new IllegalStateException("Unit could not be set to out_of_service as current state does not allow it");
+                    if (currentUnit.status == UnitStatus.OUT_OF_SERVICE) {
+                        currentUnit.status = UnitStatus.IDLE;
+                        return;
+                    } else {
+                        throw new IllegalStateException("Cannot set idle as current state is illegal");
+                    }
                 }
             }
         }
@@ -206,7 +215,7 @@ public class CityRescueImpl implements CityRescue {
         for(Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
                 String unitOutput = "U#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
-                return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation,
+                return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
                         currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
                         currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve); // TODO find out what WORK means
             }
@@ -242,7 +251,10 @@ public class CityRescueImpl implements CityRescue {
                     return;
                 } else if (currentIncident.status == IncidentStatus.DISPATCHED){
                     currentIncident.status = IncidentStatus.CANCELLED;
-                    // TODO add code to release units when more unit code has been created
+                    currentIncident.dispatchedUnit.xCoord = currentIncident.dispatchedUnit.homeStation.xCoord;
+                    currentIncident.dispatchedUnit.yCoord = currentIncident.dispatchedUnit.homeStation.yCoord;
+                    currentIncident.dispatchedUnit.status = UnitStatus.IDLE;
+                    currentIncident.dispatchedUnit = null;
                     return;
                 } else {
                     throw new IllegalStateException("Incident cannot be cancelled as at current state it cannot be cancelled");
