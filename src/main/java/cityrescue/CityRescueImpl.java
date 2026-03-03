@@ -297,8 +297,6 @@ public class CityRescueImpl implements CityRescue {
                     return;
                 } else if (currentIncident.status == IncidentStatus.DISPATCHED){
                     currentIncident.status = IncidentStatus.CANCELLED;
-                    currentIncident.dispatchedUnit.xCoord = currentIncident.dispatchedUnit.homeStation.xCoord;
-                    currentIncident.dispatchedUnit.yCoord = currentIncident.dispatchedUnit.homeStation.yCoord;
                     currentIncident.dispatchedUnit.status = UnitStatus.IDLE;
                     currentIncident.dispatchedUnit = null;
                     return;
@@ -362,8 +360,9 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void dispatch() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Incident currentIncident : incidentObjArray) {
+
+        }
     }
 
     @Override
