@@ -365,12 +365,123 @@ public class CityRescueImpl implements CityRescue {
         }
     }
 
-    @Override
-    public void tick() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+    private boolean isLegalMove(int x, int y) {
+
+        int width = getGridSize()[0];
+        int height = getGridSize()[1];
+
+        if (x < 0 || x >= width || y < 0 || y >= height)
+            return false;
+
+        return !map.isBlocked(x, y);
     }
 
+    @Override
+    public void tick() {
+        tick++;
+        unitObjArray.stream()
+                .filter(u -> u.status == UnitStatus.EN_ROUTE)
+                .sorted((a, b) -> Integer.compare(a.unitID, b.unitID))
+                .forEach(u -> {
+
+                    Incident inc = u.currentIncident;
+                    if (inc == null) return;
+
+                    int[][] directions = {
+                            {0, -1},
+                            {1, 0},
+                            {0, 1},
+                            {-1, 0}
+                    };
+
+                    int currentDistance =
+                            Math.abs(u.xCoord - inc.xCoord) +
+                                    Math.abs(u.yCoord - inc.yCoord);
+
+                    boolean moved = false;
+                    for (int[] d : directions) {
+
+                        int newX = u.xCoord + d[0];
+                        int newY = u.yCoord + d[1];
+
+                        if (isLegalMove(newX, newY)) {
+
+                            int newDistance =
+                                    Math.abs(newX - inc.xCoord) +
+                                            Math.abs(newY - inc.yCoord);
+
+                            if (newDistance < currentDistance) {
+                                u.xCoord = newX;
+                                u.yCoord = newY;
+                                moved = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!moved) {
+                        for (int[] d : directions) {
+
+                            int newX = u.xCoord + d[0];
+                            int newY = u.yCoord + d[1];
+
+                            if (isLegalMove(newX, newY)) {
+                                u.xCoord = newX;
+                                u.yCoord = newY;
+                                break;
+                            }
+                        }
+                    }
+                });
+        for (Unit u : unitObjArray) {
+
+            if (u.status == UnitStatus.EN_ROUTE &&
+                    u.currentIncident != null &&
+                    u.xCoord == u.currentIncident.xCoord &&
+                    u.yCoord == u.currentIncident.yCoord) {
+
+                u.status = UnitStatus.AT_SCENE;
+                u.currentIncident.status = IncidentStatus.IN_PROGRESS;
+
+                // Set work duration based on unit type
+                switch (u.type) {
+                    case AMBULANCE:
+                        u.currentIncident.ticksLeftToResolve = 2;
+                        break;
+                    case POLICE_CAR:
+                        u.currentIncident.ticksLeftToResolve = 3;
+                        break;
+                    case FIRE_ENGINE:
+                        u.currentIncident.ticksLeftToResolve = 4;
+                        break;
+                }
+            }
+        }
+        for (Unit u : unitObjArray) {
+
+            if (u.status == UnitStatus.AT_SCENE &&
+                    u.currentIncident != null &&
+                    u.currentIncident.status == IncidentStatus.IN_PROGRESS) {
+
+                u.currentIncident.ticksLeftToResolve--;
+
+                if (u.currentIncident.ticksLeftToResolve == 0) {
+                    u.currentIncident.status = IncidentStatus.RESOLVED;
+                }
+            }
+        }
+        incidentObjArray.stream()
+                .sorted((a, b) -> Integer.compare(a.incidentID, b.incidentID))
+                .filter(i -> i.status == IncidentStatus.RESOLVED)
+                .forEach(i -> {
+
+                    if (i.dispatchedUnit != null) {
+                        i.dispatchedUnit.status = UnitStatus.IDLE;
+                        i.dispatchedUnit.currentIncident = null;
+                    }
+
+                    i.dispatchedUnit = null;
+                });
+    }
     @Override
     public String getStatus() {
         String statusString = "TICK=%dnSTATIONS=%d UNITS=%d INCIDENTS=%d OBSTACLES=%dnINCIDENTSn";
