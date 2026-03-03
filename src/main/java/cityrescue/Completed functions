@@ -7,8 +7,8 @@ removeStation - DONE
 setStationCapacity - DONE
 getStationIds - DONE
 addUnit - DONE
-decommissionUnit - TODO
-transferUnit - TODO
+decommissionUnit - DONE
+transferUnit - DONE
 setUnitOutOfService - DONE
 getUnitIds - DONE
 viewUnit - DONE

@@ -182,8 +182,34 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        Station newStation = null;
+        for (Station currentStation : stationObjArray) {
+            if (currentStation.stationID == newStationId) {
+                newStation = currentStation;
+            }
+        }
+        if (newStation == null) {
+            throw new IDNotRecognisedException("New station ID not found");
+        }
+        for (Unit currentUnit : unitObjArray) {
+            if (currentUnit.unitID == unitId) {
+                if (currentUnit.status == UnitStatus.IDLE) {
+                    if (newStation.stationedUnits.size() >= newStation.maxUnits){
+                        throw new CapacityExceededException("Unit cannot be transferred as new station capacity is at maximum");
+                    } else {
+                        currentUnit.homeStation.stationedUnits.remove(currentUnit);
+                        currentUnit.homeStation = newStation;
+                        currentUnit.homeStation.stationedUnits.add(currentUnit);
+                        currentUnit.xCoord = newStation.xCoord;
+                        currentUnit.yCoord = newStation.yCoord;
+                        return;
+                    }
+                } else {
+                    throw new IllegalStateException("Unit cannot be transferred as current state does not allow it");
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit cannot be transferred as unit ID cannot be found");
     }
 
     @Override
