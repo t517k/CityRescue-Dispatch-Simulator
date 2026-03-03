@@ -21,6 +21,7 @@ public class CityRescueImpl implements CityRescue {
     ArrayList<Unit> unitObjArray = new ArrayList<>();
     ArrayList<Station> stationObjArray = new ArrayList<>();
     ArrayList<Incident> incidentObjArray = new ArrayList<>();
+    int obstacleNum = 0;
     CityMap map;
     int tick;
 
@@ -46,6 +47,7 @@ public class CityRescueImpl implements CityRescue {
         } else {
             Obstacle newObstacle = new Obstacle(x, y);
             map.addObstacle(x, y, newObstacle);
+            ++obstacleNum;
         }
     }
 
@@ -57,6 +59,7 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidLocationException("Obstacle cannot be removed as location is out of bounds");
         } else {
             map.removeObstacle(x, y);
+            --obstacleNum;
         }
     }
 
@@ -157,6 +160,7 @@ public class CityRescueImpl implements CityRescue {
         newUnit.yCoord = targetStation.yCoord;
 
         targetStation.stationedUnits.add(newUnit);
+        unitObjArray.add(newUnit);
 
         return newUnit.unitID;
     }
@@ -175,6 +179,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
+        System.out.print(unitObjArray.size());
         for (Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
                 if (outOfService) {
@@ -214,13 +219,20 @@ public class CityRescueImpl implements CityRescue {
     public String viewUnit(int unitId) throws IDNotRecognisedException {
         for(Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
-                String unitOutput = "U#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
-                return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
-                        currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
-                        currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve); // TODO find out what WORK means
+                String unitOutput = "nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
+                if (currentUnit.currentIncident == null) {
+                    return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
+                            currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
+                            "-", "-");
+                } else {
+                    return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
+                            currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
+                            currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve);
+                }
+
             }
         }
-        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
+        throw new IDNotRecognisedException("Unit cannot be viewed as ID has not been found");
     }
 
     @Override
@@ -232,7 +244,7 @@ public class CityRescueImpl implements CityRescue {
         } else if (x<0 || x>=xWidth || y<0 || y>=yHeight) {
             throw new InvalidLocationException("Incident cannot be reported as location is out of bounds");
         } else if (severity<1 || severity>5){
-            throw new InvalidSeverityException("Incident cannot be added as severity is invalid");
+            throw new InvalidSeverityException("Incident cannot be reported as severity is invalid");
         } else if (map.isBlocked(x, y)){
             throw new InvalidLocationException("Incident cannot be reported as location is blocked");
         } else {
@@ -298,13 +310,20 @@ public class CityRescueImpl implements CityRescue {
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         for(Incident currentIncident : incidentObjArray) {
             if (currentIncident.incidentID == incidentId) {
-                String incidentOutput = "I#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
-                return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
-                        currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
-                        currentIncident.dispatchedUnit.unitID);
+                String incidentOutput = "nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
+                if (currentIncident.dispatchedUnit == null) {
+                    return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
+                            currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
+                            "-");
+                } else {
+                    return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
+                            currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
+                            currentIncident.dispatchedUnit.unitID);
+                }
+
             }
         }
-        throw new IDNotRecognisedException("Incident cannot be cancelled as ID has not been found");
+        throw new IDNotRecognisedException("Incident cannot be viewed as ID has not been found");
     }
 
     @Override
@@ -321,7 +340,25 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String getStatus() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        String statusString = "TICK=%dnSTATIONS=%d UNITS=%d INCIDENTS=%d OBSTACLES=%dnINCIDENTSn";
+        String formattedStatus = String.format(statusString, tick, stationObjArray.size(), unitObjArray.size(),
+                incidentObjArray.size(), obstacleNum);
+        StringBuilder formattedStatusVar = new StringBuilder(formattedStatus);
+        for (Incident currentIncident : incidentObjArray) {
+            try {
+                formattedStatusVar.append(viewIncident(currentIncident.incidentID));
+            } catch (IDNotRecognisedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        formattedStatusVar.append("\nUNITS");
+        for (Unit currentUnit : unitObjArray) {
+            try {
+                formattedStatusVar.append(viewUnit(currentUnit.unitID));
+            } catch (IDNotRecognisedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return formattedStatusVar.toString();
     }
 }

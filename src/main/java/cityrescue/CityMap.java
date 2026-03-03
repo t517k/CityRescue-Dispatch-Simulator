@@ -37,8 +37,9 @@ public class CityMap {
     }
 
     public boolean isBlocked(int x, int y) {
-        return this.grid != null;
+        return this.grid[y][x] != null;
     }
+
 
 
 

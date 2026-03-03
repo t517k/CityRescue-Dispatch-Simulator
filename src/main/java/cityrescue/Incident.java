@@ -25,8 +25,4 @@ public class Incident {
         this.yCoord = yCoord;
         this.incidentID = ++numOfIncidents;
     }
-
-    // Methods...
-    // set status
-    // choose unit
 }

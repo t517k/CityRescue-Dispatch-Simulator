@@ -12,13 +12,4 @@ public abstract class Unit {
     int xCoord;
     int yCoord;
     Incident currentIncident;
-
-
-    // status
-    // ID
-    // type
-
-    // Methods...
-    // fetch ID
-    // change status
 }

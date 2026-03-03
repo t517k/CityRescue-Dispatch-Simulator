@@ -19,4 +19,4 @@ getIncidentIds - DONE
 viewIncident - DONE
 dispatch - TODO
 tick - TODO
-getStatus - TODO
+getStatus - DONE
