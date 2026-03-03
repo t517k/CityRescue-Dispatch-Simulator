@@ -167,8 +167,17 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Unit currentUnit : unitObjArray) {
+            if (currentUnit.unitID == unitId) {
+                if (currentUnit.status == UnitStatus.EN_ROUTE || currentUnit.status == UnitStatus.AT_SCENE) {
+                    throw new IllegalStateException("Unit cannot be decommissioned as current state does does not allow it");
+                } else {
+                    unitObjArray.remove(currentUnit);
+                    return;
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit cannot be decommissioned as ID cannot be found");
     }
 
     @Override
@@ -179,7 +188,6 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
-        System.out.print(unitObjArray.size());
         for (Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
                 if (outOfService) {
