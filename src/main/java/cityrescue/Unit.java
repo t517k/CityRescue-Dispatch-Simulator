@@ -12,4 +12,10 @@ public abstract class Unit {
     int xCoord;
     int yCoord;
     Incident currentIncident;
+    int manhattanDistance;
+
+    public void setManhattanDistance(int destinationX, int destinationY) {
+        this.manhattanDistance = (Math.abs(this.xCoord - destinationX) + Math.abs(this.yCoord - destinationY));
+    }
 }
+

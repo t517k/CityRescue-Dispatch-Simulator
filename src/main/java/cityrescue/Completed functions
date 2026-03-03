@@ -17,6 +17,6 @@ cancelIncident - DONE
 escalateIncident - DONE
 getIncidentIds - DONE
 viewIncident - DONE
-dispatch - TODO
-tick - TODO
+dispatch - DONE
+tick - DONE
 getStatus - DONE

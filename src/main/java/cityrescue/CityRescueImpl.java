@@ -7,13 +7,10 @@ import com.sun.jdi.ObjectCollectedException;
 
 /**
  * CityRescueImpl (Starter)
- *
  * Your task is to implement the full specification.
  * You may add additional classes in any package(s) you like.
  */
 public class CityRescueImpl implements CityRescue {
-
-    // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
 
     final int MAX_STATIONS = 20;
     final int MAX_UNITS = 50;
@@ -125,24 +122,24 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
-        if (type == null){
+        if (type == null) {
             throw new InvalidUnitException("Unit type can't be null");
         }
         Station targetStation = null;
-        for (Station s: stationObjArray){
-            if (s.stationID == stationId){
+        for (Station s: stationObjArray) {
+            if (s.stationID == stationId) {
                 targetStation = s;
                 break;
             }
         }
-        if (targetStation == null){
+        if (targetStation == null) {
             throw new IDNotRecognisedException("Station ID doesn't exist");
         }
-        if (targetStation.stationedUnits.size() >= targetStation.maxUnits){
+        if (targetStation.stationedUnits.size() >= targetStation.maxUnits) {
             throw new IllegalStateException("Station is at maximum capacity");
         }
         Unit newUnit;
-        switch (type){
+        switch (type) {
             case FIRE_ENGINE:
                 newUnit = new FireEngine(UnitType.FIRE_ENGINE, UnitStatus.IDLE);
                 break;
@@ -361,7 +358,118 @@ public class CityRescueImpl implements CityRescue {
     @Override
     public void dispatch() {
         for (Incident currentIncident : incidentObjArray) {
-
+            if (currentIncident.status == IncidentStatus.REPORTED) {
+                for (Unit currentUnit : unitObjArray) {
+                    switch (currentIncident.type) {
+                        case FIRE:
+                            ArrayList<Unit> fireEngines = new ArrayList<>();
+                            if (currentUnit.status == UnitStatus.IDLE && currentUnit.type == UnitType.FIRE_ENGINE) {
+                                fireEngines.add(currentUnit);
+                            }
+                            Unit minUnitF = fireEngines.get(0);
+                            for (Unit unit : fireEngines) {
+                                unit.setManhattanDistance(currentIncident.xCoord, currentIncident.yCoord);
+                            }
+                            for (Unit unit : fireEngines) {
+                                if (unit.manhattanDistance < minUnitF.manhattanDistance) {
+                                    minUnitF = unit;
+                                }
+                            }
+                            ArrayList<Unit> equalF = new ArrayList<>();
+                            for (Unit unit : fireEngines) {
+                                if (unit.manhattanDistance == minUnitF.manhattanDistance) {
+                                    equalF.add(unit);
+                                }
+                            }
+                            if (equalF.size() > 1) {
+                                Unit minUnitID = equalF.get(0);
+                                for (Unit unit : equalF) {
+                                    if (unit.unitID < minUnitID.unitID) {
+                                        minUnitID = unit;
+                                    }
+                                }
+                                minUnitID.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitID;
+                            } else {
+                                minUnitF.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitF;
+                            }
+                        case MEDICAL:
+                            ArrayList<Unit> ambulances = new ArrayList<>();
+                            if (currentUnit.status == UnitStatus.IDLE && currentUnit.type == UnitType.AMBULANCE) {
+                                ambulances.add(currentUnit);
+                            }
+                            Unit minUnitA = ambulances.get(0);
+                            for (Unit unit : ambulances) {
+                                unit.setManhattanDistance(currentIncident.xCoord, currentIncident.yCoord);
+                            }
+                            for (Unit unit : ambulances) {
+                                if (unit.manhattanDistance < minUnitA.manhattanDistance) {
+                                    minUnitA = unit;
+                                }
+                            }
+                            ArrayList<Unit> equalA = new ArrayList<>();
+                            for (Unit unit : ambulances) {
+                                if (unit.manhattanDistance == minUnitA.manhattanDistance) {
+                                    equalA.add(unit);
+                                }
+                            }
+                            if (equalA.size() > 1) {
+                                Unit minUnitIDA = equalA.get(0);
+                                for (Unit unit : equalA) {
+                                    if (unit.unitID < minUnitIDA.unitID) {
+                                        minUnitIDA = unit;
+                                    }
+                                }
+                                minUnitIDA.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitIDA;
+                            } else {
+                                minUnitA.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitA;
+                            }
+                        case CRIME:
+                            ArrayList<Unit> policeCars = new ArrayList<>();
+                            if (currentUnit.status == UnitStatus.IDLE && currentUnit.type == UnitType.POLICE_CAR) {
+                                policeCars.add(currentUnit);
+                            }
+                            Unit minUnitC = policeCars.get(0);
+                            for (Unit unit : policeCars) {
+                                unit.setManhattanDistance(currentIncident.xCoord, currentIncident.yCoord);
+                            }
+                            for (Unit unit : policeCars) {
+                                if (unit.manhattanDistance < minUnitC.manhattanDistance) {
+                                    minUnitC = unit;
+                                }
+                            }
+                            ArrayList<Unit> equalC = new ArrayList<>();
+                            for (Unit unit : policeCars) {
+                                if (unit.manhattanDistance == minUnitC.manhattanDistance) {
+                                    equalC.add(unit);
+                                }
+                            }
+                            if (equalC.size() > 1) {
+                                Unit minUnitIDC = equalC.get(0);
+                                for (Unit unit : equalC) {
+                                    if (unit.unitID < minUnitIDC.unitID) {
+                                        minUnitIDC = unit;
+                                    }
+                                }
+                                minUnitIDC.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitIDC;
+                            } else {
+                                minUnitC.status = UnitStatus.EN_ROUTE;
+                                currentIncident.status = IncidentStatus.DISPATCHED;
+                                currentIncident.dispatchedUnit = minUnitC;
+                            }
+                        default:
+                    }
+                }
+            }
         }
     }
 
