@@ -251,12 +251,12 @@ public class CityRescueImpl implements CityRescue {
         for(Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
                 if (currentUnit.currentIncident == null) {
-                    String unitOutput = "\nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%s WORK=%s";
+                    String unitOutput = "U#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%s WORK=%s";
                     return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
                             currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
                             "-", "-");
                 } else {
-                    String unitOutput = "\nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
+                    String unitOutput = "U#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
                     return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
                             currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
                             currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve);
@@ -341,12 +341,12 @@ public class CityRescueImpl implements CityRescue {
         for(Incident currentIncident : incidentObjArray) {
             if (currentIncident.incidentID == incidentId) {
                 if (currentIncident.dispatchedUnit == null) {
-                    String incidentOutput = "\nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%s";
+                    String incidentOutput = "I#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%s";
                     return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
                             currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
                             "-");
                 } else {
-                    String incidentOutput = "\nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
+                    String incidentOutput = "I#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
                     return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
                             currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
                             currentIncident.dispatchedUnit.unitID);
