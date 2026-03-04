@@ -3,7 +3,6 @@ package cityrescue;
 import java.util.ArrayList;
 import cityrescue.enums.*;
 import cityrescue.exceptions.*;
-import com.sun.jdi.ObjectCollectedException;
 
 /**
  * CityRescueImpl (Starter)
@@ -68,7 +67,7 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
+    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException, CapacityExceededException {
         int xWidth = getGridSize()[0];
         int yHeight = getGridSize()[1];
         if (name.isEmpty()) {
@@ -77,6 +76,8 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidLocationException("Station cannot be added as location is out of bounds");
         } else if (map.isBlocked(x, y)) {
             throw new InvalidLocationException("Station cannot be added as location is blocked");
+        } else if (stationObjArray.size() == MAX_STATIONS) {
+            throw new CapacityExceededException("Station cannot be added as max number of stations has been reached");
         } else {
             Station newstation = new Station(x, y, name);
             stationObjArray.add(newstation);
@@ -128,9 +129,12 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
+    public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException, CapacityExceededException {
         if (type == null) {
             throw new InvalidUnitException("Unit type can't be null");
+        }
+        if (unitObjArray.size() == MAX_UNITS) {
+            throw new CapacityExceededException("Unit cannot be added as max number of units has been reached");
         }
         Station targetStation = null;
         for (Station s: stationObjArray) {
@@ -275,7 +279,7 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
+    public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException, CapacityExceededException {
         int xWidth = getGridSize()[0];
         int yHeight = getGridSize()[1];
         if (type == null) {
@@ -284,8 +288,10 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidLocationException("Incident cannot be reported as location is out of bounds");
         } else if (severity<1 || severity>5){
             throw new InvalidSeverityException("Incident cannot be reported as severity is invalid");
-        } else if (map.isBlocked(x, y)){
+        } else if (map.isBlocked(x, y)) {
             throw new InvalidLocationException("Incident cannot be reported as location is blocked");
+        } else if (incidentObjArray.size() == MAX_INCIDENTS) {
+            throw new CapacityExceededException("Incident cannot be reported as max number of incidents has been reached");
         } else {
             Incident newIncident = new Incident(IncidentStatus.REPORTED, type, severity, x, y);
             incidentObjArray.add(newIncident);
