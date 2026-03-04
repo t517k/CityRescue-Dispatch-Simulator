@@ -39,15 +39,4 @@ public class CityMap {
     public boolean isBlocked(int x, int y) {
         return this.grid[y][x] != null;
     }
-
-
-
-
-
-
-
-    // update map
-    // check if move is legal
-    // add blocked cell
-    // remove blocked cell
 }
