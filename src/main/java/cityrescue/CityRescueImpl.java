@@ -393,10 +393,12 @@ public class CityRescueImpl implements CityRescue {
                             minUnitID.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitID;
+                            minUnitID.currentIncident = currentIncident;
                         } else {
                             minUnitF.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitF;
+                            minUnitF.currentIncident = currentIncident;
                         }
                         break;
                     case MEDICAL:
@@ -431,10 +433,12 @@ public class CityRescueImpl implements CityRescue {
                             minUnitIDA.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitIDA;
+                            minUnitIDA.currentIncident = currentIncident;
                         } else {
                             minUnitA.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitA;
+                            minUnitA.currentIncident = currentIncident;
                         }
                         break;
                     case CRIME:
@@ -469,10 +473,12 @@ public class CityRescueImpl implements CityRescue {
                             minUnitIDC.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitIDC;
+                            minUnitIDC.currentIncident = currentIncident;
                         } else {
                             minUnitC.status = UnitStatus.EN_ROUTE;
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitC;
+                            minUnitC.currentIncident = currentIncident;
                         }
                         break;
                 }
