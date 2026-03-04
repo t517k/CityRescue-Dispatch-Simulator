@@ -398,6 +398,7 @@ public class CityRescueImpl implements CityRescue {
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitF;
                         }
+                        break;
                     case MEDICAL:
                         ArrayList<Unit> ambulances = new ArrayList<>();
                         for (Unit currentUnit : unitObjArray) {
@@ -435,6 +436,7 @@ public class CityRescueImpl implements CityRescue {
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitA;
                         }
+                        break;
                     case CRIME:
                         ArrayList<Unit> policeCars = new ArrayList<>();
                         for (Unit currentUnit : unitObjArray) {
@@ -472,7 +474,7 @@ public class CityRescueImpl implements CityRescue {
                             currentIncident.status = IncidentStatus.DISPATCHED;
                             currentIncident.dispatchedUnit = minUnitC;
                         }
-                    default:
+                        break;
                 }
             }
         }
