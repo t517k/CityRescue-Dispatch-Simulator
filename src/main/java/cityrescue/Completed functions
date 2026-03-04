@@ -20,3 +20,5 @@ viewIncident - DONE
 dispatch - DONE
 tick - DONE
 getStatus - DONE
+
+ALL TESTS WORK BUT PublicTickLifecycleTest and PublicOutputFormatTest
