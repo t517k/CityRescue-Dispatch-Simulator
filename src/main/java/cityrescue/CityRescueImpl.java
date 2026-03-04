@@ -21,7 +21,7 @@ public class CityRescueImpl implements CityRescue {
     int tick;
 
     /**
-     * Resets the simulation by creating a new grid with the specified dimensions, clearing all units, stations, incidents, and obstacles, resetting counters, and setting the tick back to zero.
+     * Resets the simulation by creating a new grid with the specified dimensions, clearing all units, stations, incidents, and obstacles, resetting counters and setting the tick back to zero
      * @param width
      * @param height
      * @throws InvalidGridException
@@ -366,7 +366,7 @@ public class CityRescueImpl implements CityRescue {
     }
 
     /**
-     * Validates the incident details and, if valid and capacity allows, creates a new incident at the specified location and returns its ID
+     * Validates the incident details and creates a new incident at the specified location and returns its ID
      * @param type
      * @param severity
      * @param x
@@ -752,7 +752,7 @@ public class CityRescueImpl implements CityRescue {
     }
 
     /**
-     * Returns a formatted summary of the current simulation state, including the tick count, totals of stations, units, incidents, and obstacles, and information about each incident and unit.
+     * Returns a formatted summary of the current simulation state, including the tick count, number of stations, units, incidents, and obstacles, and information about each incident and unit
      * @return
      */
     @Override
