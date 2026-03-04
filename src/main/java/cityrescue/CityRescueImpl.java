@@ -250,12 +250,13 @@ public class CityRescueImpl implements CityRescue {
     public String viewUnit(int unitId) throws IDNotRecognisedException {
         for(Unit currentUnit : unitObjArray) {
             if (currentUnit.unitID == unitId) {
-                String unitOutput = "nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
                 if (currentUnit.currentIncident == null) {
+                    String unitOutput = "\nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%s WORK=%s";
                     return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
                             currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
                             "-", "-");
                 } else {
+                    String unitOutput = "\nU#%d TYPE=%s HOME=%d LOC=(%d,%d) STATUS=%s INCIDENT=%d WORK=%d";
                     return String.format(unitOutput, unitId, currentUnit.type, currentUnit.homeStation.stationID,
                             currentUnit.xCoord, currentUnit.yCoord, currentUnit.status,
                             currentUnit.currentIncident.incidentID, currentUnit.currentIncident.ticksLeftToResolve);
@@ -339,17 +340,17 @@ public class CityRescueImpl implements CityRescue {
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         for(Incident currentIncident : incidentObjArray) {
             if (currentIncident.incidentID == incidentId) {
-                String incidentOutput = "nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
                 if (currentIncident.dispatchedUnit == null) {
+                    String incidentOutput = "\nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%s";
                     return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
                             currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
                             "-");
                 } else {
+                    String incidentOutput = "\nI#%d TYPE=%s SEV=%d LOC=(%d,%d) STATUS=%s UNIT=%d";
                     return String.format(incidentOutput, incidentId, currentIncident.type, currentIncident.severity,
                             currentIncident.xCoord, currentIncident.yCoord, currentIncident.status,
                             currentIncident.dispatchedUnit.unitID);
                 }
-
             }
         }
         throw new IDNotRecognisedException("Incident cannot be viewed as ID has not been found");
@@ -596,7 +597,7 @@ public class CityRescueImpl implements CityRescue {
     }
     @Override
     public String getStatus() {
-        String statusString = "TICK=%dnSTATIONS=%d UNITS=%d INCIDENTS=%d OBSTACLES=%dnINCIDENTSn";
+        String statusString = "TICK=%d\nSTATIONS=%d UNITS=%d INCIDENTS=%d OBSTACLES=%d\nINCIDENTS";
         String formattedStatus = String.format(statusString, tick, stationObjArray.size(), unitObjArray.size(),
                 incidentObjArray.size(), obstacleNum);
         StringBuilder formattedStatusVar = new StringBuilder(formattedStatus);
