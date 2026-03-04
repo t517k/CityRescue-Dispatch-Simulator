@@ -22,8 +22,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Resets the simulation by creating a new grid with the specified dimensions, clearing all units, stations, incidents, and obstacles, resetting counters and setting the tick back to zero
-     * @param width
-     * @param height
+     * @param width Integer value of the width or X axis
+     * @param height Integer value of the height or Y axis
      * @throws InvalidGridException
      */
     @Override
@@ -51,8 +51,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Adds an obstacle at a specific x and y coordinate on the grid
-     * @param x
-     * @param y
+     * @param x Integer value of X coordinate on the grid
+     * @param y Integer value of Y coordinate on the grid
      * @throws InvalidLocationException
      */
     @Override
@@ -70,8 +70,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Removes an existing obstacle at a specific x and y coordinate on the grid
-     * @param x
-     * @param y
+     * @param x Integer value of X coordinate on the grid
+     * @param y Integer value of Y coordinate on the grid
      * @throws InvalidLocationException
      */
     @Override
@@ -88,9 +88,9 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Adds a station at a specific x and y coordinate on the grid
-     * @param name
-     * @param x
-     * @param y
+     * @param name String containing station name
+     * @param x Integer value of X coordinate on the grid
+     * @param y Integer value of Y coordinate on the grid
      * @return
      * @throws InvalidNameException
      * @throws InvalidLocationException
@@ -117,7 +117,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Removes an existing station at a specific x and y coordinate on the grid
-     * @param stationId
+     * @param stationId An integer which represents the Id of a station
      * @throws IDNotRecognisedException
      * @throws IllegalStateException
      */
@@ -138,8 +138,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Sets the maximum number of units a Station can contain to an integer
-     * @param stationId
-     * @param maxUnits
+     * @param stationId An integer which represents the Id of a station
+     * @param maxUnits An integer which stores the maximum capacity for a given station
      * @throws IDNotRecognisedException
      * @throws InvalidCapacityException
      */
@@ -177,8 +177,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Adds a new unit to an existing station if there is enough capacity
-     * @param stationId
-     * @param type
+     * @param stationId An integer which represents the Id of a station
+     * @param type This value is an enum value from UnitType enum
      * @return
      * @throws IDNotRecognisedException
      * @throws InvalidUnitException
@@ -232,7 +232,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Removes the unit with the specified ID from the system if it exists and is not currently en route or at the scene
-     * @param unitId
+     * @param unitId This value is an enum value from UnitType enum
      * @throws IDNotRecognisedException
      * @throws IllegalStateException
      */
@@ -253,8 +253,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Transfers an idle unit to a specified station, if both the unit and station exist and the station has available capacity
-     * @param unitId
-     * @param newStationId
+     * @param unitId This value is an enum value from UnitType enum
+     * @param newStationId An integer which is the Id value of the station the unit will be transferred to
      * @throws IDNotRecognisedException
      * @throws IllegalStateException
      */
@@ -292,8 +292,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Sets a unit’s status to out of service or back to idle if the unit exists and is in a valid state for the change
-     * @param unitId
-     * @param outOfService
+     * @param unitId This value is an enum value from UnitType enum
+     * @param outOfService A boolean value which stores True if a unit is out of service and False if not
      * @throws IDNotRecognisedException
      * @throws IllegalStateException
      */
@@ -340,7 +340,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Returns a formatted string containing the specified unit’s details including type, home station, location, status, and incident information
-     * @param unitId
+     * @param unitId This value is an enum value from UnitType enum
      * @return
      * @throws IDNotRecognisedException
      */
@@ -367,10 +367,10 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Validates the incident details and creates a new incident at the specified location and returns its ID
-     * @param type
-     * @param severity
-     * @param x
-     * @param y
+     * @param type This value is an enum value from UnitType enum
+     * @param severity Integer value from 1 to 5 included which denotes how severe an incident is, from 1 being the least severe to 5 being the most severe
+     * @param x Integer value of X coordinate on the grid
+     * @param y Integer value of Y coordinate on the grid
      * @return
      * @throws InvalidSeverityException
      * @throws InvalidLocationException
@@ -399,7 +399,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Cancels the specified incident if it exists and is in a cancellable state, and resets any dispatched unit to idle
-     * @param incidentId
+     * @param incidentId An integer identifier for each incident
      * @throws IDNotRecognisedException
      * @throws IllegalStateException
      */
@@ -425,8 +425,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Updates the severity of the specified incident if it exists, the new severity is valid, and the incident has not been cancelled or resolved
-     * @param incidentId
-     * @param newSeverity
+     * @param incidentId An integer identifier for each incident
+     * @param newSeverity An integer from 1 to 5 included, which contains the new value of severity of an incident
      * @throws IDNotRecognisedException
      * @throws InvalidSeverityException
      * @throws IllegalStateException
@@ -467,7 +467,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Returns a formatted string containing the specified incident’s details including type, severity, location, status, and dispatched unit
-     * @param incidentId
+     * @param incidentId An integer identifier for each incident
      * @return
      * @throws IDNotRecognisedException
      */
@@ -626,8 +626,8 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Checks whether the specified coordinates are within the grid boundaries and not blocked on the map
-     * @param x
-     * @param y
+     * @param x Integer value of X coordinate on the grid
+     * @param y Integer value of Y coordinate on the grid
      * @return
      */
     private boolean isLegalMove(int x, int y) {
