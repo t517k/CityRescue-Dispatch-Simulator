@@ -28,6 +28,13 @@ public class CityRescueImpl implements CityRescue {
         tick = 0;
         map = new CityMap(width, height);
         map.initialiseGrid();
+        obstacleNum = 0;
+        unitObjArray.clear();
+        stationObjArray.clear();
+        incidentObjArray.clear();
+        Station.numOfStations = 0;
+        Incident.numOfIncidents = 0;
+        Unit.numberOfUnits = 0;
     }
 
     @Override
